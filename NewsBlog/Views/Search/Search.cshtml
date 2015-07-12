@@ -1,0 +1,37 @@
+﻿@model NewsBlog.Models.NewsSearcher
+
+@{
+    ViewBag.Title = "Поиск";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Поиск</h2>
+
+@using (Ajax.BeginForm("Search", "Search", new AjaxOptions { UpdateTargetId = "results", HttpMethod = "POST"}))
+{
+    <table>
+    <tr>
+        <td>@Html.LabelFor(a => a.Title)</td>
+        <td>@Html.TextBoxFor(a => a.Title)</td>
+        <td>@Html.ValidationMessageFor(a => a.Title)</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(a => a.KeyWords)</td>
+        <td>@Html.TextAreaFor(a => a.KeyWords)</td>
+        <td>@Html.ValidationMessageFor(a => a.KeyWords)</td>
+    </tr>
+    <tr>
+        <td>@Html.LabelFor(a => a.Category)</td>
+        <td>@Html.DropDownListFor(a => a.Category, new SelectList(NewsBlog.Models.Category.Categories))</td>
+        <td>@Html.ValidationMessageFor(a => a.Category)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <input type="submit" value="Искать" />
+        </td>
+        <td></td>
+    </tr>
+</table>
+}
+<div id="results"></div>

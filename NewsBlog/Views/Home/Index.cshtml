@@ -1,0 +1,36 @@
+﻿@model IEnumerable<NewsBlog.Models.News>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Новости";
+}
+<head>
+    <title>Новостной блог</title>
+</head>
+    <body>
+        <div class="menu-list">
+            Сортировать по категориям:
+            <br />
+            @Ajax.ActionLink("Все", "SelectCategory", "Home", new { category = "Все"}, new AjaxOptions { UpdateTargetId = "news", HttpMethod = "POST" })
+            @foreach(var k in NewsBlog.Models.Category.Categories)
+            {
+                if (k != " ")
+                {
+                    @Ajax.ActionLink(k, "SelectCategory", "Home", new { category = k }, new AjaxOptions { UpdateTargetId = "news", HttpMethod = "POST" });
+                }
+            }
+            <br />
+        </div>
+        <div id="news">
+            @Html.Partial("_GridForNews", Model)
+        </div>
+
+        @if (Session["LogedUserName"] != null)
+        {
+            using (Html.BeginForm("AddNews", "Home", FormMethod.Get))
+            {
+                <input type="submit" value="Добавить новость" />
+            }
+        }
+            
+    </body>

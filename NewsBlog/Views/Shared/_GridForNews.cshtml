@@ -1,0 +1,26 @@
+﻿@model IEnumerable<NewsBlog.Models.News>
+@using GridMvc.Html
+
+@if (Model != null)
+{
+    @Html.Grid(Model).Named("_Grid").Columns(columns =>
+            {
+                var date = columns.Add(n => n.DatePublication).Titled("Дата")
+                    .RenderValueAs(n => n.DatePublication != null ? n.DatePublication.GetDateTimeFormats()[10] : string.Empty).Sortable(true).SetWidth(110);
+                columns.Add(news => news.Title).Titled("Заголовок").Sortable(true).SetWidth(250);
+                columns.Add().Titled("Содержание").Encoded(false).Sanitized(false)
+                    .RenderValueAs(news => String.Format(news.Content.Count() > 50 ? news.Content.Substring(0, 50) + "... {0}" : news.Content + " {0}",
+                        @Html.ActionLink("Подробнее", "ReadMore", "Home", new { id = news.NewsId }, null)));
+                columns.Add(news => news.Category).Titled("Категория");
+                if (Session["LogedUserName"] != null)
+                    columns.Add().Encoded(false).Sanitized(false)
+                    .RenderValueAs(news => String.Format("{0}\n{1}", @Html.ActionLink("Редактировать", "Edit", "Home", new { id = news.NewsId }, null), @Html.ActionLink("Удалить", "Delete", "Home", new { id = news.NewsId }, null)));
+
+
+            }).WithPaging(10)
+
+}
+else
+{
+    <text>Новости отсутствуют</text>
+}

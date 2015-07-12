@@ -1,0 +1,23 @@
+﻿@model NewsBlog.Models.NewsAndComments
+
+@using GridMvc.Html
+
+@if (Model != null)
+{
+    @Html.Grid(Model.Comments).Named("_Grid").Columns(columns =>
+            {
+                var date = columns.Add(c => c.DatePublication).Titled("Дата")
+                    .RenderValueAs(n => n.DatePublication != null ? n.DatePublication.GetDateTimeFormats()[10] : string.Empty);
+                columns.Add(c => c.Content).Titled("Комментарий");
+                if (Session["LogedUserName"] != null)
+                    columns.Add().Encoded(false).Sanitized(false).RenderValueAs(c => @Ajax.ActionLink("Удалить", "DeleteComm",
+                        new { id = c.CommentId }, new AjaxOptions { UpdateTargetId = "comments", HttpMethod = "POST"}));
+                //dateColumn.IsSorted = true;
+
+            }).WithPaging(20)
+
+}
+else
+{
+    <text>Комментарии отсутствуют</text>
+}

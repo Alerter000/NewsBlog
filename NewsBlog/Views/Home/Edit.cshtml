@@ -1,0 +1,42 @@
+﻿@model NewsBlog.Models.News
+
+@{
+    ViewBag.Title = "Редактирование";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Редактирование новости</h2>
+@using (Html.BeginForm("Edit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+    <table>
+        <tr>
+            <td>@Html.LabelFor(a => a.Title)</td>
+            <td>@Html.TextBoxFor(a => a.Title)</td>
+            <td>@Html.ValidationMessageFor(a => a.Title)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(a => a.Content)</td>
+            <td>@Html.TextAreaFor(a => a.Content, 10, 55, null)</td>
+            <td>@Html.ValidationMessageFor(a => a.Content)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(a => a.Category)</td>
+            <td>@Html.DropDownListFor(a => a.Category, new SelectList(NewsBlog.Models.Category.Categories))</td>
+            <td>@Html.ValidationMessageFor(a => a.Category)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(a => a.Image)</td>
+            <td>
+                <input type="file" name="upload" />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Редактировать" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+}

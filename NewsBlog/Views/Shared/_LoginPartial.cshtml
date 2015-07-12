@@ -1,0 +1,22 @@
+﻿@if (Session["LogedUserName"] != null)
+{
+    <text>
+        Здравствуйте, @Session["LogedUserName"]!
+        @using (Html.BeginForm("LogOff", "Home", FormMethod.Post, new { id = "logoutForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <a href="javascript:document.getElementById('logoutForm').submit()">Выйти</a>
+        }
+    </text>
+}
+else
+{
+    <div class="site-hello" style="font-family: Rockwell, Consolas, "Courier New", Courier, monospace; font-size: 2.3em;">
+        Здравствуйте, Гость!
+    </div>
+    <br />
+    <ul class="btn" style="width:100px; align-content:stretch">
+        <li>@Html.ActionLink("Регистрация", "Register", "Home", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Выполнить вход", "Login", "Home", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
